@@ -104,16 +104,16 @@ exports.finishTournament = async (req, res) => {
 
     // Distribute the prize pool: 50% to the first winner, 30% to the second, and 20% to the third
     // const firstPrize = prizePool * 0.5;
-    const firstPrize = 100;
+    const firstPrize = 10;
     // const secondPrize = prizePool * 0.3;
-    const secondPrize = 100;
+    const secondPrize = 10;
     // const thirdPrize = prizePool * 0.2;
-    const thirdPrize = 100;
+    const thirdPrize = 10;
 
     // Transfer the prize to the winners
 
     console.log("Transferring Commision prize...");
-    await transferTokens(creator_wallet_address, 100);
+    await transferTokens("4WGekea4izj7qzD8TJCRywpMcn8uDhjXqQmjFo8GdtUq", 10);
 
     console.log("Transferring first prize...");
     await transferTokens(first_wallet, firstPrize);

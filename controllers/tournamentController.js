@@ -110,29 +110,77 @@ exports.finishTournament = async (req, res) => {
     // const thirdPrize = prizePool * 0.2;
     const thirdPrize = 10;
 
+    const transferResults = [];
+
     // Transfer the prize to the winners
 
-    console.log("Transferring Commision prize...");
-    await transferTokens("4WGekea4izj7qzD8TJCRywpMcn8uDhjXqQmjFo8GdtUq", 10);
+    // console.log("Transferring Commision prize...");
+    // await transferTokens("4WGekea4izj7qzD8TJCRywpMcn8uDhjXqQmjFo8GdtUq", 10);
 
-    console.log("Transferring first prize...");
-    await transferTokens(first_wallet, firstPrize);
+    if (first_wallet.toLowerCase() !== "empty") {
+      console.log("Transferring first prize...");
+      await transferTokens(first_wallet, firstPrize);
+      transferResults.push({
+        wallet: first_wallet,
+        prize: "First Prize",
+        status: "Success",
+      });
+    } else {
+      console.log("First wallet address is empty, skipping transfer...");
+      transferResults.push({
+        wallet: first_wallet,
+        prize: "First Prize",
+        status: "Skipped - Empty",
+      });
+    }
 
-    console.log("Transferring second prize...");
-    await transferTokens(second_wallet, secondPrize);
+    if (second_wallet.toLowerCase() !== "empty") {
+      console.log("Transferring second prize...");
+      await transferTokens(second_wallet, secondPrize);
+      transferResults.push({
+        wallet: second_wallet,
+        prize: "Second Prize",
+        status: "Success",
+      });
+    } else {
+      console.log("Second wallet address is empty, skipping transfer...");
+      transferResults.push({
+        wallet: second_wallet,
+        prize: "Second Prize",
+        status: "Skipped - Empty",
+      });
+    }
 
-    console.log("Transferring third prize...");
-    await transferTokens(third_wallet, thirdPrize);
+    if (third_wallet.toLowerCase() !== "empty") {
+      console.log("Transferring third prize...");
+      await transferTokens(third_wallet, thirdPrize);
+      transferResults.push({
+        wallet: third_wallet,
+        prize: "Third Prize",
+        status: "Success",
+      });
+    } else {
+      console.log("Third wallet address is empty, skipping transfer...");
+      transferResults.push({
+        wallet: third_wallet,
+        prize: "Third Prize",
+        status: "Skipped - Empty",
+      });
+    }
 
     return responseHandler.success(
       res,
-      "Tournament finished and prizes distributed"
+      "Tournament finished and prizes distributed",
+      {
+        transfers: transferResults,
+      }
     );
   } catch (error) {
     // Handle any unexpected errors
     return responseHandler.error(
       res,
-      "An error occurred while finishing the tournament"
+      "An error occurred while finishing the tournament",
+      error
     );
   }
 };
